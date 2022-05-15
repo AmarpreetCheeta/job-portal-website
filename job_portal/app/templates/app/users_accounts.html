@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>TrueJOB - Account</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'app/css/account.css' %}" />
+    <link rel="shortcut icon" href="{% static 'app/img/setting.png' %}" type="image/x-icon">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body id="test">
+
+    <nav class="navbar sticky-top navbar-dark bg-dark  navbar-expand-lg ">
+        <div class="container" style="max-width: 70rem;">
+            <a class="logo" href="{% url 'index' %}"><i class="fa-solid fa-seedling"></i>TrueJOB</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav" style="width: 100%;justify-content: center;">
+                    <li class="nav-item nav_first" style="padding-top: 4px;">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item _divfgt" style="padding-top: 4px;">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Employees
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'resume' %}">Submit Resume</a>
+                        </div>
+                    </li>
+                    <li class="nav-item _divfgt" style="padding-top: 4px;">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Recruiters
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'jobs' %}">Submit Jobs</a>
+                            <a class="dropdown-item" href="{% url 'company' %}">Add Company</a>
+                            <a class="dropdown-item" href="{% url 'jobs_and_company_data' %}">Check Applied</a>
+                        </div>
+                    </li>
+
+                    <li class="nav-item _divfgt" style="padding-top: 4px;">
+                        <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                    </li>
+                </ul>
+                <div class="btn-group">
+                    <a class="nav-link dropdown" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        {% if request.user.image %}
+                        <img src="{{request.user.image.url}}" width="35" height="35" style="border-radius: 50%;" alt="">
+                        {% else %}
+                        <i class="fa fa-user-circle fa-2x" style="color: #b3e671;"></i>
+                        {% endif %}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="#navbarDropdown">
+                        {% if not request.user.is_authenticated %}
+                        <a class="dropdown-item" href="{% url 'login' %}">
+                            <img src="{% static 'app/img/enter.png' %}" alt="no"> Login</a>
+                        <a class="dropdown-item" href="{% url 'signup' %}">
+                            <img src="{% static 'app/img/sign-up.png' %}" alt="no"> Signup</a>
+                        {% else %}
+                        <a class="dropdown-item" href="{% url 'accounts' %}">
+                            <img src="{% static 'app/img/setting.png' %}" alt="no"> Account</a>
+                        <a class="dropdown-item" href="{% url 'logout' %}">
+                            <img src="{% static 'app/img/logout.png' %}" alt="no"> Logout</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container mt-5 pb-5" style="max-width: 70rem">
+        {% for data in user_data %}
+        <div class="card mb-3" style="border: none;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <div class="card-body">
+                        <div class="img_section">
+                            {% if user_data %}
+                            <div class="img_file">
+                                <img src="{{data.image.url}}" width="225px" height="225px" style="border-radius: 50%;" alt="{{data.image}}">
+                            </div>
+                            {% else %}
+                            <div class="img_file">
+                                <i class="fa fa-user-circle fa-10x" style="color: #b3e671;"></i>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="text_ibgh mt-5">
+                            <div class="first-name">
+                                <h4 style="color: #534d4d;">{{data.first_name}}</h4>
+                            </div>
+                            <div class="user_nam">
+                                <p style="color: #727272;">{{data.username}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                                    aria-controls="home" aria-selected="true">Info</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                                    aria-controls="profile" aria-selected="false">Resumes</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                <div class="section_dd mt-5">
+                                    <div class="columnjk">
+                                        <h5 style="color: #534d4d;">Full Name</h5>
+                                        <p class="_psrsgt">{{data.first_name}}</p>
+                                    </div>
+                                    <div class="columnjk">
+                                        <h5 style="color: #534d4d;">Username</h5>
+                                        <p class="_psrsgt">{{data.username}}</p>
+                                    </div>
+                                    <div class="columnjk">
+                                        <h5 style="color: #534d4d;">Phone Number</h5>
+                                        <p class="_psrsgt">{{data.phone}}</p>
+                                    </div>
+                                    <div class="columnjk">
+                                        <h5 style="color: #534d4d;">Email Address</h5>
+                                        <p class="_psrsgt">{{data.email}}</p>
+                                    </div>
+                                    <div class="columnjk">
+                                        <h5 style="color: #534d4d;">State</h5>
+                                        <p class="_psrsgt">{{data.state}}</p>
+                                    </div>
+                                    <div class="columnjk">
+                                        <h5 style="color: #534d4d;">Gender</h5>
+                                        <p class="_psrsgt">{{data.gender}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                {% if resume_data %}
+                                <div class="resume_paragt p-4">
+                                    {% for data in resume_data %}
+                                    <a style="text-decoration: none;" href="{% url 'resume_data' data.id %}">
+                                        <div class="card mb-4">
+                                            <div class="card-body">
+                                                <div class="fg_kio">
+                                                    <div class="inhuj d-flex">
+                                                        <h6 style="color: #727272;width: 100%;">{{data.full_name}}</h6>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                                                            fill="#b1b1b1" class="bi bi-file-text" viewBox="0 0 16 16">
+                                                            <path
+                                                                d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zM5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1H5z" />
+                                                            <path
+                                                                d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z" />
+                                                        </svg>
+                                                    </div>
+                                                    <span style="font-size: 10px;color: #727272;">Upload on {{data.date}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                <div class="empty_folder mt-5 text-center">
+                                    <div style="text-align: center;" class="pt-5">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="#b1b1b1"
+                                            class="bi bi-file-text" viewBox="0 0 16 16">
+                                            <path
+                                                d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zM5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1H5z" />
+                                            <path
+                                                d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z" />
+                                        </svg>
+                                    </div>
+                                    <small style="font-weight: 550;color: #b1b1b1;margin-top: 20px;">Empty Resume
+                                        Folder</small>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+    <script>
+        var btn = document.getElementById("btn_type")
+        var content = document.getElementById("myModal")
+        var closee = document.querySelectorAll(".close")[0]
+
+        btn.onclick = function () {
+            content.style.display = "block"
+        }
+
+        closee.onclick = function () {
+            content.style.display = "none"
+        }
+
+        window.onclick = function (event) {
+            if (event.target == content) {
+                content.style.display = "none"
+            }
+        }
+    </script>
+</body>
+
+</html>

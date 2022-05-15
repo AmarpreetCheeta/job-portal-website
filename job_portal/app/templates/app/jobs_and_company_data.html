@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrueJob - Applied</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <link rel="stylesheet" href="{% static 'app/css/searchjobs.css' %}" />
+  <link rel="shortcut icon" href="{% static 'app/img/companydata.png' %}" type="image/x-icon" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+
+<body id="test">
+  <nav class="navbar sticky-top navbar-dark bg-dark navbar-expand-lg">
+    <div class="container" style="max-width: 70rem">
+      <a class="logo" href="{% url 'index' %}"><i class="fa-solid fa-seedling"></i>TrueJOB</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav" style="width: 100%; justify-content: center">
+          <li class="nav-item nav_first" style="padding-top: 4px">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item _divfgt" style="padding-top: 4px">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              Employees
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="{% url 'resume' %}">Submit Resume</a>
+            </div>
+          </li>
+          <li class="nav-item _divfgt" style="padding-top: 4px">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              Recruiters
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="{% url 'jobs' %}">Submit Jobs</a>
+              <a class="dropdown-item" href="{% url 'company' %}">Add Company</a>
+              <a class="dropdown-item" href="{% url 'jobs_and_company_data' %}">Check Applied</a>
+            </div>
+          </li>
+
+          <li class="nav-item _divfgt" style="padding-top: 4px">
+            <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+          </li>
+        </ul>
+      </div>
+      <!-- Default dropleft button -->
+      <div class="btn-group">
+        <a class="nav-link dropdown" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          {% if request.user.image %}
+          <img src="{{request.user.image.url}}" width="35" height="35" style="border-radius: 50%" alt="" />
+          {% else %}
+          <i class="fa fa-user-circle fa-2x" style="color: #b3e671"></i>
+          {% endif %}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="#navbarDropdown">
+          {% if not request.user.is_authenticated %}
+          <a class="dropdown-item" href="{% url 'login' %}">
+            <img src="{% static 'app/img/enter.png' %}" alt="no" /> Login</a>
+          <a class="dropdown-item" href="{% url 'signup' %}">
+            <img src="{% static 'app/img/sign-up.png' %}" alt="no" />
+            Signup</a>
+          {% else %}
+          <a class="dropdown-item" href="{% url 'accounts' %}">
+            <img src="{% static 'app/img/setting.png' %}" alt="no" />
+            Account</a>
+          <a class="dropdown-item" href="{% url 'logout' %}">
+            <img src="{% static 'app/img/logout.png' %}" alt="no" /> Logout</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="dgrgff">
+    <div class="container mt-4" style="max-width: 51rem">
+      <div class="jobs-list list_if_jobs" id="jobs-list">
+        {% if job_data %}
+        {% for data in job_data %}
+        <a style="text-decoration: none;" href="{% url 'users_account' data.user.id %}">
+          <div class="card" style="border: none;background-color: whitesmoke;">
+            <div class="jobs">
+              <div class="row g-0 row_class">
+                <div class="col-md-4 text-center">
+                  {% if data.user.image %}
+                  <img src="{{data.user.image.url}}" class="img_size" style="border-radius: 50%" alt="" />
+                  {% else %}
+                  <div class="img_size">
+                    <i class="fa fa-user-circle fa-10x" style="color: #b3e671"></i>
+                  </div>
+                  {% endif %}
+                </div>
+                <div class="col-md-8 j-details">
+                  <div class="head_title mb-4 mt-4 d-flex">
+                    <h2 style="color: #444444; width: 90%">
+                      {{data.user.first_name}}
+                    </h2>
+                  </div>
+                  <h5 style="color: #444444">
+                    <img src="{{data.apply.company_name.logo.url}}" style="width: 30px; height: 30px" alt="" />
+                    {{data.apply.company_name}}
+                  </h5>
+                  <div class="loc_type mt-4 d-flex">
+                    <p class="_types mt-1">
+                      <svg width="18" height="18" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                      </svg>
+                      {{data.apply.job_title}}
+                    </p>
+                    <p class="locat d-flex mt-2">
+                      <svg width="13" height="13" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                        <path
+                          d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
+                      </svg>
+                      {{data.apply.location}}
+                    </p>
+                  </div>
+                  <div class="delkij" style="text-align: right;">
+                    <form action="{% url 'usersapply_del' data.id %}" method="POST">
+                      {% csrf_token %}
+                      <button type="submit" class="btn_del">Remove</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+        {% endfor %}
+        {% else %}
+        <div class="not_apply mt-5 text-center">
+          <p style="color: #444444; font-size: 20px; font-size: 550">
+            No apply data here
+          </p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <!-- <script src="{% static 'app/js/searchjobs.js' %}"></script> -->
+</body>
+
+</html>

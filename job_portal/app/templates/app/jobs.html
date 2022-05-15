@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+{% load static %}
+<!-- Created By CodingLab - www.codinglabweb.com -->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>TrueJob - Jobs</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static 'app/css/jobsstyle.css' %}" />
+    <link rel="shortcut icon" href="{% static 'app/img/submitjob.png' %}" type="image/x-icon">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+
+  <body id="test">
+
+    <nav class="navbar sticky-top navbar-dark bg-dark navbar-expand-lg ">
+      <div class="container" style="max-width: 70rem;">
+        <a class="logo" href="{% url 'index' %}"><i class="fa-solid fa-seedling"></i>TrueJOB</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav" style="width: 100%;justify-content: center;">
+            <li class="nav-item nav_first" style="padding-top: 4px;">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item _divfgt" style="padding-top: 4px;">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Employees
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{% url 'resume' %}">Submit Resume</a>
+                </div>
+            </li>
+            <li class="nav-item _divfgt" style="padding-top: 4px;">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Recruiters
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{% url 'jobs' %}">Submit Jobs</a>
+                    <a class="dropdown-item" href="{% url 'company' %}">Add Company</a>
+                    <a class="dropdown-item" href="{% url 'jobs_and_company_data' %}">Check Applied</a>
+                </div>
+            </li>
+
+            <li class="nav-item _divfgt" style="padding-top: 4px;">
+                <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+            </li>
+          </ul>
+          <div class="btn-group">
+            <a class="nav-link dropdown" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                {% if request.user.image %}
+                <img src="{{request.user.image.url}}" width="35" height="35" style="border-radius: 50%;" alt="">
+                {% else %}
+                <i class="fa fa-user-circle fa-2x" style="color: #b3e671;"></i>
+                {% endif %}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="#navbarDropdown">
+                {% if not request.user.is_authenticated %}
+                <a class="dropdown-item" href="{% url 'login' %}"> 
+                    <img src="{% static 'app/img/enter.png' %}" alt="no"> Login</a>
+                <a class="dropdown-item" href="{% url 'signup' %}"> 
+                    <img src="{% static 'app/img/sign-up.png' %}" alt="no"> Signup</a>
+                {% else %}
+                <a class="dropdown-item" href="{% url 'accounts' %}"> 
+                    <img src="{% static 'app/img/setting.png' %}" alt="no"> Account</a>
+                <a class="dropdown-item" href="{% url 'logout' %}"> 
+                    <img src="{% static 'app/img/logout.png' %}" alt="no"> Logout</a>
+                {% endif %}
+            </div>
+        </div>          
+      </div>
+    </nav>
+
+
+    <div class="container _box_types">
+      <div style="display: flex">
+        <div class="title" style="width: 100%">Job Info</div>
+        <div class="backlink" style="width: 100%; text-align: right">
+          <a href="{% url 'index' %}"><i class="fa fa-backward"></i> Back</a>
+        </div>
+      </div>
+      {% if messages %} {% for msg in messages %}
+      <div class="alert alert-dismissible done_title d-flex" role="alert">
+        <small class="me-auto mt-1" style="color: #59b670">{{msg}}</small>
+      </div>
+      {% endfor %} {% endif %}
+      <div class="content">
+        <form action="" method="POST">
+          {% csrf_token %}
+          <div class="user-details">
+            <div class="input-box">
+              <span class="details">Job Title</span>
+              {{forms.job_title}}
+            </div>
+            <div class="input-box">
+              <span class="details">Location</span>
+              {{forms.location}}
+            </div>
+            <div class="input-box">
+              <span class="details">Email </span>
+              {{forms.email}}
+            </div>
+            <div class="input-box">
+              <span class="details">Choose your company</span>
+              {{forms.company_name}}
+            </div>
+            <div class="input-box">
+              <span class="details">Salary</span>
+              {{forms.salary}}
+            </div>
+            <div class="input-box">
+              <span class="details">Job Types</span>
+              {{forms.job_type}}
+            </div>
+          </div>
+          <div class="input-box">
+            <span class="details">Skills</span>
+            {{forms.skills}}
+          </div>
+          <div class="input-box">
+            <span class="details">Description</span>
+            {{forms.discription}}
+          </div>
+          <div class="button">
+            <input type="submit" value="Post" />
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+  </body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>TrueJob - login</title>
+    <link rel="stylesheet" href="{% static 'app/css/loginstyle.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+  </head>
+  <body>
+    <div class="container">
+      <form action="" method="POST">
+        {% csrf_token %}
+        <div style="display: flex">
+          <div class="title" style="width: 100%">Login</div>
+          <div class="signUpLink" style="width: 100%; text-align: right">
+            <a href="{% url 'signup' %}">Sign Up</a>
+          </div>
+        </div>
+        <div class="input-box underline">
+          {{forms.username}}
+          <div class="underline"></div>
+        </div>
+        <div class="input-box form-control">
+          {{forms.password}}
+          <div class="underline"></div>
+          
+        </div>
+        <div class="abhi">
+        <!-- <input type="checkbox" onclick="myFunction()">Show Password -->
+      </div>
+        <!-- <div class="divfp my-5">
+          <a href="{% url 'forgetpassword'%}" class="fp">Forget Password?</a>
+        </div> -->
+        
+        <div class="errors_fm" style="text-align: center;">
+          {% if forms.non_field_errors %}
+          {% for err in forms.non_field_errors %}
+          <small style="color: red;">{{err}}</small>
+          {% endfor %}
+          {% endif %}
+        </div>
+        <div class="input-box button">
+          <input type="submit" value="Continue" />
+        </div>
+      </form>
+      <div class="back">
+        <a href="{% url 'index' %}"><i class="fa fa-backward"></i>Back to Home</a>
+      </div>
+    </div>
+
+    <script>
+      function myFunction() {
+        var x = document.getElementsByClassName("show");
+        if (x.type === "password") {
+          x.type = "text";
+        } else {
+          x.type = "password";
+        }
+      }
+      
+    </script>
+  </body>
+</html>

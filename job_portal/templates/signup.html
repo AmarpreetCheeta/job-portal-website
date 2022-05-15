@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>JobTrue - Signup</title>
+    <link rel="stylesheet" href="{% static 'app/css/bootstrap.css' %}" />
+    <link rel="stylesheet" href="{% static 'app/css/signupstyle.css' %}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+
+  <body>
+    <div class="container mt-5 mb-5">
+      <div style="display: flex">
+        <div class="title" style="width: 100%">Registration</div>
+        <div class="signUpLink" style="width: 100%; text-align: right">
+          <a href="{% url 'login' %}">Log In</a>
+        </div>
+      </div>
+      <div class="content">
+        <form action="" method="POST">
+          {% csrf_token %}
+          <div class="user-details">
+            {% for fm in forms %}
+            <div class="input-box underline">
+              {{fm}}
+              <div class="underline"></div>
+              <span style="color: red;">{{fm.errors|striptags}}</span>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="button">
+            <input type="submit" value="Register" />
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="{% static 'app/js/bootstrap.js' %}"></script>
+    <script src="{% static 'app/js/popper.js' %}"></script>
+  </body>
+</html>
